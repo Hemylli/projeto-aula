@@ -57,18 +57,23 @@ Parte do curso Javascript Programmer
         </header>
         <!--===============FORM CONTATOS===============-->
         <h2 class="alert alert-info">Envie sua mensagem</h2>
-        <form action="" method="GET" class="mt-5 mb-5">
+        <form action="./atualiza-promo" method="GET" class="mt-5 mb-5">
+            
+            <div class="form-group">
+              <label for="promo">Adicionar à lista de promoções?</label>
+              <input type="radio" class="col-lg-1" value="1" id="promo_sim" name="promo">Sim
+              <input type="radio" class="col-lg-1" value="0" id="promo_não" name="promo">Não
+            </div>
+
             <div class="form-group">
               <label for="livro">Livro</label>
               <select name="id">
-                  <option>...</option>
+                  <% galeria.forEach((item)=>{ %>
+                  <option value="<%=item.livros_id%>"><%=item.titulo%></option>
+                  <% }) %>
               </select>
             </div>
-            <div class="form-group">
-              <label for="promo">Adicionar à lista de promoções?</label>
-              <input type="radio" class="form-control col-lg-9" value="1" id="promo_sim" name="promo">
-              <input type="radio" class="form-control col-lg-9" value="0" id="promo_não" name="promo">
-            </div>
+
             <button type="submit" class="btn btn-primary">Confirmar</button>
         </form>
         <!-- =============== Produtos ================== -->
