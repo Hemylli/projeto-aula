@@ -28,6 +28,16 @@ app.get("/",(req,res)=>{
     })
 })
 
+app.get("/promocoes",async(req,res)=>{
+    const consultaPromo = await db.selectPromo()
+    res.render(`promocoes`,{
+        titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!",
+        livro:consulta,
+        galeria:consultaPromo
+    })
+})
+
 app.get("/single-produto",async(req,res)=>{
     let infoUrl = req.url
     let urlProp = url.parse(infoUrl,true)// /?id=5
@@ -40,6 +50,21 @@ app.get("/single-produto",async(req,res)=>{
         promo:"Todos os livros com 10% de desconto!",
         livro:consulta,
         galeria:consultaSingle        
+    })
+})
+
+app.get("/cadastro",async(req,res)=>{
+    let infoUrl = req.url
+    let urlProp = url.parse(infoUrl,true)// /?id=5
+    let q = urlProp.query
+    const consultaSingle = await db.selectSingle(q.id)
+    const consultaInit = await db.selectSingle(4)
+
+    res.render(`cadastro`,
+        {titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!",
+        livro:consulta,
+        galeria:consultaInit        
     })
 })
 

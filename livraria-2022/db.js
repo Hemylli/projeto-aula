@@ -35,6 +35,13 @@ async function selectSingle(id){
     return rows
 }
 
+async function selectPromo(){
+    const conectado = await conecta()
+    const [rows] = await conectado.query("SELECT * FROM livros WHERE promo=1")
+    //console.log(rows)
+    return rows
+}
+
 async function insertLivro(livro){
     const conectado = await conecta()
     const values = [livro.titulo,livro.resumo,livro.valor,livro.imagem]
@@ -46,6 +53,6 @@ async function insertLivro(livro){
 //selectFilmes()
 //selectLivros()
 //selectSingle(10)
-insertLivro({titulo:"wild Fury",resumo:"Lorem Lorem",valor:40.35,imagem:"wild-fury.jpg"})
+//insertLivro({titulo:"wild Fury",resumo:"Lorem Lorem",valor:40.35,imagem:"wild-fury.jpg"})
 
-module.exports = {selectFilmes,selectLivros,selectSingle}
+module.exports = {selectFilmes,selectLivros,selectSingle,selectPromo}

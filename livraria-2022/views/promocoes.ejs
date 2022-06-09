@@ -29,16 +29,13 @@ Parte do curso Javascript Programmer
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/cadastro">Cadastre-se</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/carrinho">Carrinho de compras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/promocoes">Promoções</a>
                 </li>
                 <li class="nav-item">
                     <% 
@@ -60,22 +57,8 @@ Parte do curso Javascript Programmer
             <h1>Books Online
                 <small>Market Place de Livros </small> </h1>
             <h3 class="font-weight-bold"><%=promo%></h3>
-            <% if(promo) { %>
-            <p>Compre agora o novo livro <b><%=livro[0].titulo%> - <%=livro[0].genero%></b></p> 
-                <% } %>
         </header>
 
-        <div>
-            <h5>Confira outros títulos</h5>
-            <ul>
-            <% livro.forEach((item,n)=>{ 
-                if (n>0){
-            %>
-                <li><%=item.titulo%> - <%=item.genero%> - <%=item.nome%></li>
-            <% }
-        }) %>
-            </ul>
-        </div>
         <!-- =============== Produtos ================== -->
         <div class="row">
         <!--Inicio iteração-->
