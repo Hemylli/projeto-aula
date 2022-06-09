@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Projeto Livraria</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <section>
+            <h1>Trabalhando com objetos</h1>
+        </section>
+    </body>
+    <script>
+        let carro = {
+            portas:4,
+            cor:'branco',
+            modelo:'basic',
+            tetoSolar:false,
+        }
+        if(carro.tetoSolar == false){
+            console.log("O modelo " + carro.modelo + " não tem teto solar");
+        }
+        console.log(carro.portas)//4
+        console.log(carro.cor)//branco
+
+        let carro2={
+            portas:4,
+            cores:['branco','preto','prata'],
+            modelo:'plus',
+            tetoSolar:true
+        }
+        if(carro2.tetoSolar == false){
+            console.log("O modelo " + carro2.modelo + " não tem teto solar");
+        }else{
+            console.log("O modelo " + carro2.modelo + " tem teto solar.");
+        }
+        console.log("O modelo " + carro2.modelo + ", temos nas cores " + carro2.cores)
+
+        let pessoa = {
+            nome:"Asher Maddox",
+            idade:34,
+            preferMusica:'Samba',
+                    certificados:{
+                        nome:"Node Js",
+                        ano:2021,
+                    },
+            // pais:"Brasil",
+            falar: function (pais,profissao,estiloMusica){
+                this.preferMusica = estiloMusica
+                console.log("Olá, meu nome é: " + this.nome + 
+                ". Eu tenho " + this.idade + " anos. " +
+                "Trabalho no " + pais + " como " + profissao +
+                ". Gosto de ouvir " + this.preferMusica) 
+            }
+        }
+        let nomePessoa = pessoa["nome"]
+        console.log(pessoa.certificados.nome,pessoa.certificados.ano)
+        //falar: funtion (pais)
+        console.log(nomePessoa.length)
+        console.log(pessoa.preferMusica)
+        const estiloMusica=pessoa.preferMusica
+        pessoa.falar("México","professor",estiloMusica)
+
+        pessoa.nome="Renato"
+        pessoa.idade=45
+        pessoa.falar("Havaí","Salva Vidas","Sertanejo")
+        // pesosa.falar("Ha")
+        
+    </script>
+</html>

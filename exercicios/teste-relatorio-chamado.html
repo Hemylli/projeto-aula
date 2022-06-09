@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Projeto Livraria </title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    </head>
+    <body class="container">
+        <section>
+            <form id="formChamada">
+                <div>
+                    <input type="checkbox" name="chamada" id="chamada" />
+                    <label>Abrir chamada</label>
+                </div>
+                <button class="btn btn-info">Confirmar</button>
+            </form>
+        </section>
+    </body>
+    <script>
+         //parseInt(Math.random()*10).toString()
+         let idChamada=parseInt(Math.random()*900) + 100
+         console.log(idChamada)
+         localStorage.setItem('chamada-'+idChamada,'Roque,roque@roque.com.br,119993333')
+         
+        console.log(document.forms.formChamada.chamada.checked)
+
+        //Converter o localStorage em array (Desde que existam virgulas)
+        console.log(localStorage.getItem('chamada-536'))//texto simples
+
+        let ch=localStorage.getItem('chamada-536')
+        console.log(typeof(ch))//string
+
+        let chArray= ch.split(',')
+        console.log(chArray)
+        //Nome do solicitante
+        console.log('nome:',chArray[0])
+        
+        //JSON +++++++++++++++++++++
+        let n ='{"n1":"11a","n2":"2","n3":"3"}'
+        let nJSON=JSON.parse(n)
+      
+        console.log(nJSON)//array
+
+        let info='{"nome":"' + chArray[0] + '","email":"' + chArray[1] + '"}'
+
+    </script>
+</html>
