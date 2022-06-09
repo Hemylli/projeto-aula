@@ -42,6 +42,14 @@ async function selectPromo(){
     return rows
 }
 
+async function updatePromo(promo,id){
+    const conectado = await conecta();
+    const values = [promo,id]
+    return await conectado.query("UPDATE livros SET promo=? WHERE livros_id=?",values)
+}
+
+//updatePromo()
+
 async function insertLivro(livro){
     const conectado = await conecta()
     const values = [livro.titulo,livro.resumo,livro.valor,livro.imagem]
@@ -55,4 +63,11 @@ async function insertLivro(livro){
 //selectSingle(10)
 //insertLivro({titulo:"wild Fury",resumo:"Lorem Lorem",valor:40.35,imagem:"wild-fury.jpg"})
 
-module.exports = {selectFilmes,selectLivros,selectSingle,selectPromo}
+module.exports = {
+    selectFilmes,
+    selectLivros,
+    selectSingle,
+    selectPromo,
+    insertLivro,
+    updatePromo
+}

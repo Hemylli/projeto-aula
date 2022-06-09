@@ -28,6 +28,30 @@ app.get("/",(req,res)=>{
     })
 })
 
+app.get("/upd-promo",(req,res)=>{
+    res.render(`ADM/atualiza-promocoes`,
+        {titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!",
+        livro:consulta,
+        galeria:consultaLivro
+    })
+})
+
+app.get("/insere-livro",async(req,res)=>{
+    await db.insertLivro({
+        titulo:"Anna Karenina",
+        resumo:"Lorem Lorem",
+        valor:20.45,
+        imagem:"anna.jpg"})
+    res.send("<h2>Livro adicionado!</h2><a href='./'>Voltar</a>")
+})
+
+app.get("/atualiza-promo",async(req,res)=>{
+    let qs = url.parse(req.url,true).query
+    await db.updatePromo(qs.promo,qs.id)
+    res.send("<h2>Lista de Promoções atualizada!</h2><a href='/promocoes'>Voltar</a>")
+})
+
 app.get("/promocoes",async(req,res)=>{
     const consultaPromo = await db.selectPromo()
     res.render(`promocoes`,{
