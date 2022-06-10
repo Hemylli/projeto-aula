@@ -4,8 +4,13 @@ const app = express()
 const db = require("./db.js")
 const port = 3000
 const url = require("url")
+const bodyParser = require("body-parser")
 
 app.set("view engine","ejs")
+
+//config para as variáveis POST
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 
 app.use(express.static('livraria-2022'))
 app.use("/books",express.static("books"))
@@ -46,6 +51,8 @@ app.get("/insere-livro",async(req,res)=>{
     res.send("<h2>Livro adicionado!</h2><a href='./'>Voltar</a>")
 })
 
+
+
 app.get("/atualiza-promo",async(req,res)=>{
     let qs = url.parse(req.url,true).query
     await db.updatePromo(qs.promo,qs.id)
@@ -77,6 +84,43 @@ app.get("/single-produto",async(req,res)=>{
     })
 })
 
+app.get("/contato",async(req,res)=>{
+    let infoUrl = req.url
+    let urlProp = url.parse(infoUrl,true)// /?id=5
+    let q = urlProp.query
+    const consultaSingle = await db.selectSingle(q.id)
+    const consultaInit = await db.selectSingle(4)
+
+    res.render(`contato`,
+        {titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!",
+        livro:consulta,
+        galeria:consultaInit        
+    })
+})
+
+app.post("/contato",async(req,res)=>{    
+    const info = req.body    
+    await db.insertContato({        
+       nome:info.cad_nome,
+       sobrenome:info.cad_sobrenome,
+       email:info.cad_email,
+       mensagem:info.cad_mensagem,
+    })
+    res.redirect("/promocoes")
+})
+
+//==========TESTE PESSOAL==========
+// app.get("/insere-contato",async(req,res)=>{
+//     await db.insertContato({
+//         nome:"Justin",
+//         sobrenome:"Bieber",
+//         email:"bieberfever@drew.com",
+//         mensagem:"Olá! Tenho uma prosposta para inserir meus filmes no site de vocês."})
+//     res.send("<alert>Sua mensagem foi encaminhada. Em breve entraremos em contato!</alert><a href='./'>Voltar</a>")
+// })
+
+
 app.get("/cadastro",async(req,res)=>{
     let infoUrl = req.url
     let urlProp = url.parse(infoUrl,true)// /?id=5
@@ -92,8 +136,24 @@ app.get("/cadastro",async(req,res)=>{
     })
 })
 
+app.post("/cadastro",async(req,res)=>{    
+    const info = req.body    
+    await db.insertUsuario({
+        nome:info.nome_cadastro,
+        email:info.email_cadastro,
+        telefone:info.telefone_cadastro,
+        senha:info.senha_cadastro,
+        conf_senha:info.conf_senha_cadastro
+    })
+    //res.renderalert("Cadastro realizado com sucesso!")
+    res.redirect("/promocoes")
+})
+
 app.get("/carrinho",(req,res)=>{
-    res.render(`carrinho`)
+    res.render(`carrinho`,
+        {titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!",
+    })
 })
 
 app.listen(port,()=> console.log("Servidor rodando com nodemon!"))

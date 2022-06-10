@@ -58,16 +58,37 @@ async function insertLivro(livro){
     return rows
 }
 
+async function insertContato(contato){
+    const conectado = await conecta()
+    const values = [contato.nome,contato.sobrenome,contato.email,contato.mensagem]
+    const [rows] = await conectado.query("INSERT INTO contato(nome,sobrenome,email,mensagem) VALUES (?,?,?,?)",values)
+    console.log("Insert ok!")
+    return rows
+}
+
+async function insertUsuario(usuario){
+    const conectado = await conecta()
+    const values = [usuario.nome,usuario.email,usuario.telefone,usuario.senha,usuario.conf_senha]
+    const [rows] = await conectado.query("INSERT INTO usuarios(nome,email,telefone,senha,conf_senha) VALUES (?,?,?,?,?)",values)
+    console.log("InsertUsuario ok!")
+    return rows
+}
+
 //selectFilmes()
 //selectLivros()
 //selectSingle(10)
 //insertLivro({titulo:"wild Fury",resumo:"Lorem Lorem",valor:40.35,imagem:"wild-fury.jpg"})
+//insertContato({nome:"Ana",sobrenome:"Banana",email:"aninha@gmail.com",mensagem:"Aluguei um filme mas estou tendo problemas para conseguir assistir."})
+//insertUsuario({nome:"Joelma Calypso",email:"jojoca@gmail.com",telefone:"11 35348789",senha:"eu123",conf_senha:"eu123"})
+
 
 module.exports = {
     selectFilmes,
     selectLivros,
     selectSingle,
     selectPromo,
+    updatePromo,
     insertLivro,
-    updatePromo
+    insertContato,
+    insertUsuario,
 }
