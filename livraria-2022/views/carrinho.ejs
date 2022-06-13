@@ -18,42 +18,50 @@
                          <div class="col-sm-6 col-lg-4">Produto</div>
                          <div class="col-sm-6 col-lg-2">Qtd</div>
                          <div class="col-sm-6 col-lg-3">Valor</div>
-                         <div class="col-sm-6 col-lg-2"><span class="material-icons-outlined">delete</span></td></div>
+                         <div class="col-sm-6 col-lg-2"> </div>
                      </div>
-                     <div class="row">
-                        <div class="col-sm-6 col-lg-4">O Farol</div>
-                        <div class="col-sm-6 col-lg-2">2</div>
-                        <div class="col-sm-6 col-lg-3">25,90</div>
-                        <div class="col-sm-6 col-lg-2">Excluir</div>
+                     <%
+                     total=0
+                     carrinho.forEach((item)=>{
+                     total += parseFloat(item.valor)
+                        %>                                          
+                     <div class="row mt-2">
+                        <div class="col-sm-6 col-lg-4"> <%=item.produto %> </div>
+                        <div class="col-sm-6 col-lg-2"> <%=item.qtd %> </div>
+                        <div class="col-sm-6 col-lg-3"> R$ <%=item.valor %> </div>
+                        <div class="col-sm-6 col-lg-2"> 
+                            <button class="btn btn-warning bt-carrinho" data-id="<%=item.carrinho_id%>">Excluir</button> 
+                        </div>
+                    </div>  
+                     <% }) %>
+                    <div class="text-right mt-5 font-weight-bold">Total: <%=total.toFixed(2)%></div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-4">Estratégia e Gestão</div>
-                        <div class="col-sm-6 col-lg-2">1</div>
-                        <div class="col-sm-6 col-lg-3">14,00</div>
-                        <div class="col-sm-6 col-lg-2">Excluir</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-4">Missão Marte</div>
-                        <div class="col-sm-6 col-lg-2">2</div>
-                        <div class="col-sm-6 col-lg-3">34,00</div>
-                        <div class="col-sm-6 col-lg-2">Excluir</div>
-                    </div>
-                    </div>
-                </div>
-               
+                </div>               
             </div>
-
         <!-- =============== Fim do Cadastro ================== -->
-        <div class="card col-sm-2 col-lg-2">
-            <h4>Resumo</h4>
+            <div class="card col-sm-2 col-lg-2">
+                <h3 class="text-center font-weight-bold mt-3" style="font-family: monospace;">Resumo:</h3>
+                <div class="mt-2">Total: R$ <%=total.toFixed(2)%></div>
+            </div>      
         </div>
-      
-    </div>
     </div>
     <!-- =============== Fim do Conteúdo ================== -->
+    
+    <script>
+        $().ready(function(){
+            console.log("Jquery funfando...")
+            $('.bt-carrinho').click(function(){
+                let dataid = $(this).attr('data-id')                
 
-    <script src="js/jquery-3.2.1.slim.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+                $.post("/delete-carrinho",
+                {
+                    id:dataid,                    
+                },
+                function(data,status){
+                    location.href='/carrinho'
+                },'json')                
+            })   
+        })
+    </script>
 
 <%- include("footer.ejs") %>

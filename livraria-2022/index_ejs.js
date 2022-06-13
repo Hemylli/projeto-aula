@@ -149,11 +149,31 @@ app.post("/cadastro",async(req,res)=>{
     res.redirect("/promocoes")
 })
 
-app.get("/carrinho",(req,res)=>{
-    res.render(`carrinho`,
-        {titulo:"Conheça nossos livros",
-        promo:"Todos os livros com 10% de desconto!",
+app.get("/carrinho",async(req,res)=>{
+    const consultaCarrinho = await db.selectCarrinho()    
+    res.render(`carrinho`,{
+        titulo:"Conheça nossos livros",
+        promo:"Todos os livros com 10% de desconto!", 
+        livro:consulta,
+        carrinho:consultaCarrinho       
     })
+})
+
+app.post("/carrinho",async(req,res)=>{
+    const info = req.body
+    await db.insertCarrinho({
+        produto:info.produto,
+        qtd:info.qtd,
+        valor:info.valor,
+        livros_id:info.livros_id
+    })
+    res.send(req.body)
+})
+
+app.post("/delete-carrinho",async(req,res)=>{
+    const info = req.body
+    await db.deleteCarrinho(info.id)
+    res.send(info)
 })
 
 app.listen(port,()=> console.log("Servidor rodando com nodemon!"))
