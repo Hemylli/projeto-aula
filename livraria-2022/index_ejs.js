@@ -5,8 +5,19 @@ const db = require("./db.js")
 const port = 3000
 const url = require("url")
 const bodyParser = require("body-parser")
+const session = require("express-session")
 
 app.set("view engine","ejs")
+
+const dia = 1000 * 60 * 60 * 24;
+const min15 = 1000 * 60 * 60 / 4;
+
+app.use(session({
+    secret: "hrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: dia},
+    resave: false 
+}))
 
 //config para as variáveis POST
 app.use(bodyParser.urlencoded({extended:false}))
@@ -82,6 +93,20 @@ app.get("/single-produto",async(req,res)=>{
         livro:consulta,
         galeria:consultaSingle        
     })
+})
+
+app.get("/login",async(req,res)=>{    
+    res.render(`login`,{
+        titulo:"Entrar - Livros Online",        
+    })
+})
+
+app.post("/login",async(req,res)=>{
+    let info=req.body
+    let consultaUsers = await db.selectUsers(info.email,info.senha)
+    consultaUsers == "" ? res.send(consultaUsers="Usuário não encontrado!") : res.redirect("/")    
+    const s = req.session
+    consultaUsers != "" ? s.nome=info.nome : null
 })
 
 app.get("/contato",async(req,res)=>{

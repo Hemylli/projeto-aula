@@ -22,30 +22,33 @@ async function selectFilmes(){
 
 async function selectLivros(){
     const conectado = await conecta()
-    const [rows] = await conectado.query("SELECT * FROM livros ORDER BY livros_id ASC")
-    //console.log(rows)
+    const [rows] = await conectado.query("SELECT * FROM livros ORDER BY livros_id ASC")    
     return rows
 }
 
 async function selectSingle(id){
     const conectado = await conecta()
     const values = [id]
-    const [rows] = await conectado.query("SELECT * FROM livros WHERE livros_id=?",values)
-    //console.log(rows)
+    const [rows] = await conectado.query("SELECT * FROM livros WHERE livros_id=?",values)    
     return rows
 }
 
 async function selectCarrinho(){
     const conectado = await conecta()
-    const [rows] = await conectado.query("SELECT * FROM carrinho ORDER BY carrinho_id DESC")
-    //console.log(rows)
+    const [rows] = await conectado.query("SELECT * FROM carrinho ORDER BY carrinho_id DESC")    
     return rows
 }
 
 async function selectPromo(){
     const conectado = await conecta()
     const [rows] = await conectado.query("SELECT * FROM livros WHERE promo=1")
-    //console.log(rows)
+    return rows
+}
+
+async function selectUsers(email,senha){
+    const conectado = await conecta()
+    const values = [email,senha]
+    const [rows] = await conectado.query("SELECT * FROM usuarios WHERE email=? AND senha=?",values)
     return rows
 }
 
@@ -109,6 +112,7 @@ module.exports = {
     selectSingle,
     selectCarrinho,
     selectPromo,
+    selectUsers,
     updatePromo,
     insertLivro,
     insertContato,
