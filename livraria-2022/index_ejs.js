@@ -57,6 +57,8 @@ var userInfo=''
 app.locals.info = {
     user:userInfo
 }
+app.locals.titulo="Livraria 2022 - Área Administrativa"
+app.locals.idProd=5
 
     const consulta = await db.selectFilmes()
     const consultaLivro = await db.selectLivros()
@@ -69,6 +71,14 @@ app.locals.info = {
         })
     })
 
+    app.use('/logout', function (req, res) {
+        req.app.locals.info = {}
+        req.session.destroy()
+        res.clearCookie('connect.sid', { path: '/' });
+        res.redirect("/login") 
+     
+})
+
     app.post("/login", async (req,res)=>{
         const {email,senha} = req.body
         const logado = await db.selectUsers(email,senha)
@@ -80,14 +90,6 @@ app.locals.info = {
         } else {res.send("<h2>Login ou senha não conferem</h2>")}
     })
 
-    app.use('/logout', function (req, res) {
-        req.app.locals.info = {}
-        req.session.destroy()
-        res.clearCookie('connect.sid', { path: '/' });
-        res.redirect("/login") 
-     
-})
-
     app.get("/",checkFirst,(req, res) => { // Chama a página principal e traz as consultas através das variáveis
         res.render(`index`,{
             titulo:"Conheça nossos livros",
@@ -97,12 +99,42 @@ app.locals.info = {
         })
     })
 
+    //ADMIN++++++++++++++++++++++++++
+
+    app.get("/ADM",(req, res) => { 
+        res.render('ADM/index-adm',{
+            galeria:consultaLivro
+        })
+    })
+
+    app.get("/upd-form-produto",async(req, res) => {
+        const produto = await db.selectSingle(req.app.locals.idProd)  
+        res.render('ADM/atualiza-produto',{
+            galeria:consultaLivro,
+            id:req.app.locals.idProd,
+            produtoDaVez:produto
+        })
+    })
+
+    app.post("/upd-form-produto",(req, res) => { 
+        req.app.locals.idProd= req.body.id
+        res.send('Produto Exibido com Sucesso')
+    })
+
+    app.post("/atualiza_single",async(req, res) => { 
+        //resumo,imagem,valor,titulo,id
+        const b = req.body
+        await db.updateProduto(b.resumo,b.imagem,b.valor,b.titulo,b.id)
+        res.send('Produto Atualizado com Sucesso')
+    })
+
+
     app.get("/upd-promo",(req, res) => { // Chama a página principal e traz as consultas através das variáveis
-        res.render(`adm/atualiza-promocoes`,{
+        res.render(`ADM/atualiza-promocoes`,{
             titulo:"Conheça nossos livros",
             promo:"- Compre com 10% de desconto!",
             livro:consulta,
-            inicio:consultaLivro
+            galeria:consultaLivro,
         })
     })
 
@@ -111,14 +143,13 @@ app.locals.info = {
         res.send("<h3>Livro Adicionado!</h3><a href='./'>Voltar</a>")
     })
 
-    app.get("/atualiza-promo",async(req,res) => { // Chama a página e altera o campo promo de um livro_id
-        //let infoUrl = req.url
-        //let urlProp = url.parse(infoUrl,true)
-        //let q = urlProp.query
+    app.get("/atualiza-promo",async(req,res) => {
         let qs = url.parse(req.url,true).query
-        await db.updatePromo(qs.promo,qs.id) // localhost:8080/atualiza-promo?promo=1&id=9  (No banco, o livro_id=(9), tem que estar com o campo promo=(0))
+        await db.updatePromo(qs.promo,qs.id)
         res.send("<h3>Lista de Promoções Atualizada!</h3><a href='/promocoes'>Ver Promoções</a>")
     })
+
+    //FIM ADMIN++++++++++++++++++++++++++++++++++
 
     app.get("/promocoes",async(req, res) => { // Chama a página promocoes e mostra os itens específicos
         const consultaPromo = await db.selectPromo()

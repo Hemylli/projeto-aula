@@ -24,7 +24,7 @@ async function makeSession(app,opt){
     const  sessionStore = new mysqlSession(opt,conectado)
     app.use(session({
         secret: "hrgfgrfrty84fwir767",
-        saveUninitialized:true,
+        saveUninitialized:false,
         store:sessionStore,
         cookie: { maxAge: dia},
         resave: false 
@@ -43,7 +43,7 @@ async function selectLivros(){
     const [rows] = await conectado.query("SELECT * FROM livros ORDER BY livros_id DESC")
     //console.log(rows)
     return rows
-}
+}   
 
 async function selectCarrinho(){
     const conectado = await conecta()
@@ -81,6 +81,12 @@ async function updatePromo(promo,id){
     return await conectado.query("UPDATE livros set promo=? Where livros_id=?",values)
 }
 
+async function updateProduto(resumo,imagem,valor,titulo,id){
+    const conectado = await conecta();
+    const values = [resumo,imagem,valor,titulo,id]
+    return await conectado.query("UPDATE livros set resumo=?,imagem=?,valor=?,titulo=? Where livros_id=?",values)
+}
+
 async function deleteCarrinho(id){
     const conectado = await conecta();
     const values = [id]
@@ -115,8 +121,6 @@ async function insertCarrinho(carrinho){
     return rows
 }
 
-
-
 module.exports = {
     selectFilmes,
     selectLivros,
@@ -128,6 +132,7 @@ module.exports = {
     insertContato,
     insertCarrinho,
     updatePromo,
+    updateProduto,
     deleteCarrinho,
-    makeSession,
-}
+    makeSession
+}    
